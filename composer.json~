@@ -1,6 +1,7 @@
 {
     "name": "buddiesofsymfony/user-bundle",
     "version": "1.0",
+    "type": "symfony-bundle",
     "authors": [
 	{
 	    "name": "Nicolás Bullorini",
