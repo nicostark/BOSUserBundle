@@ -1,0 +1,8 @@
+{
+    "name": "buddiesofsymfony/user-bundle",
+    "autoload": {
+        "psr-0" : {
+            "BOS\\UserBundle" : "src"
+        }
+    }
+}
