@@ -1,0 +1,9 @@
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+     bos_user:
+         class: BOS\UserBundle\Services\UserService
+         arguments: ['@service_container']
+         tags:
+             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
