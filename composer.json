@@ -1,9 +1,15 @@
 {
     "name": "buddiesofsymfony/user-bundle",
     "type": "symfony-bundle",
+    "authors": [
+	{
+	    "name": "Nicolás Bullorini",
+	    "email": "nbullorini@microblet.com"
+	}
+    ],
     "autoload": {
         "psr-4" : {
-            "BOS\\UserBundle" : ""
+            "BOS\\UserBundle\\" : ""
         }
     },
     "require": {
