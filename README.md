@@ -1,4 +1,4 @@
-# BOSUserBundle
+# BuddiesOfSymfony/UserBundle
 This a simple Symfony2 bundle to handle basic user management. PHP 5.5.0 as minimum is needed.
 
 # Important
