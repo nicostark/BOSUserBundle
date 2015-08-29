@@ -5,7 +5,7 @@ This a simple Symfony2 bundle to handle basic user management. PHP 5.5.0 as mini
 Notice that this bundle it's on alpha stage. It's currently working, but improvements are needed.
 
 # Before you start
-If you find any bugs or have troubles installing the bundle, [open a issue](issues/) and i'll try to fix it ASAP. 
+If you find any bugs or have troubles installing the bundle, [open a issue](https://github.com/nicostark/BOSUserBundle/issues) and i'll try to fix it ASAP. 
 This way we all win.
 
 # What does it do?
@@ -22,4 +22,4 @@ I needed a nice way to handle my users and i tried to install FOSUserBundle. Alt
 - Once you saved it, run "./composer.phar update" to download the bundle.
 
 # Use and configuration
-Please [check the wiki section](wiki/). Don't worry, it's very very simple.
+Please [check the wiki section](https://github.com/nicostark/BOSUserBundle/wiki). Don't worry, it's very very simple.
