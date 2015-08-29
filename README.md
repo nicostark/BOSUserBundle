@@ -4,6 +4,10 @@ This a simple Symfony2 bundle to handle basic user management. PHP 5.5.0 as mini
 # Important
 Notice that this bundle it's on alpha stage. It's currently working, but improvements are needed.
 
+# Before you start
+If you find any bugs or have troubles installing the bundle, open a Issue and i'll try to fix it ASAP. 
+This way we all win.
+
 # What does it do?
 This bundle will allow you to create users, update them, handle logins and logouts, and restrict URLs to only logged in users with a single annotation.
 
