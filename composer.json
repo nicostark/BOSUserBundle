@@ -1,5 +1,6 @@
 {
     "name": "buddiesofsymfony/user-bundle",
+    "version": "0.1",
     "type": "symfony-bundle",
     "authors": [
 	{
