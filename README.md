@@ -14,6 +14,5 @@ I needed a nice way to handle my users and i tried to install FOSUserBundle. Alt
 - First of all, add the package to composer: "composer require buddiesofsymfony/user-bundle"
 - Once you installed it, run "./composer.phar update" to download the bundle.
 
-# Configuration
-This bundle requires a single parameter to work, no routing needed, no services needed.
-- Add "bos_login_name" parameter to your parameters.yml. This must be the route name you wish to redirect the user when it tries to access an address that requires login. Example: bos_login_name: _login_page
+# Use and configuration
+Please check the wiki section. Don't worry, it's very very simple.
