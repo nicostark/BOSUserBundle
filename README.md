@@ -22,4 +22,4 @@ I needed a nice way to handle my users and i tried to install FOSUserBundle. Alt
 - Once you saved it, run "./composer.phar update" to download the bundle.
 
 # Use and configuration
-Please check the wiki section. Don't worry, it's very very simple.
+Please [check the wiki section](/wiki). Don't worry, it's very very simple.
