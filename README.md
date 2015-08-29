@@ -5,7 +5,7 @@ This a simple Symfony2 bundle to handle basic user management. PHP 5.5.0 as mini
 Notice that this bundle it's on alpha stage. It's currently working, but improvements are needed.
 
 # Before you start
-If you find any bugs or have troubles installing the bundle, open a Issue and i'll try to fix it ASAP. 
+If you find any bugs or have troubles installing the bundle, [open a issue](https://github.com/nicostark/BOSUserBundle/issues) and i'll try to fix it ASAP. 
 This way we all win.
 
 # What does it do?
