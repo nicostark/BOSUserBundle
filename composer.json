@@ -9,7 +9,7 @@
     ],
     "autoload": {
         "psr-4" : {
-            "BOS\\" : "BOS/UserBundle/"
+            "BOS\\UserBundle\\" : "BOS/UserBundle/"
         }
     },
     "require": {
