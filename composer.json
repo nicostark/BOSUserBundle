@@ -5,7 +5,7 @@
         "psr-4" : {
             "BOS\\UserBundle" : ""
         }
-    }
+    },
     "require": {
         "php": ">=5.3.2"
     }
