@@ -84,6 +84,10 @@ class UserService
 		return $user->getId();
 	}
 	
+	public function updatePassword($username, $password){
+		return $this->bos->updatePassword($username, $password);
+	}
+	
 	public function usernameExists($username){
 		return $this->bos->usernameExists($username);
 	}

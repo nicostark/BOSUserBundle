@@ -36,4 +36,20 @@ class BOSUserRepository extends EntityRepository
 		}
 	}
 	
+	public function updatePassword($username, $password){
+		$hash = password_hash($password, PASSWORD_BCRYPT);
+		$user = $this->findOneBy(array("username" => $username));
+		if(!$user){
+			throw new \Exception("The username does not exist");
+		}
+		try{
+			$user->setPassword($hash);
+			$this->getEntityManager()->persist($user);
+			$this->getEntityManager()->flush($user);
+		}catch(\Exception $e){
+			throw $e;
+		}
+		return true;
+	}
+	
 }
