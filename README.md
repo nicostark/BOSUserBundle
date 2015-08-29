@@ -8,7 +8,7 @@ Notice that this bundle it's on alpha stage. It's currently working, but improve
 This bundle will allow you to create users, update them, handle logins and logouts, and restrict URLs to only logged in users with a single annotation.
 
 # Why is it so simple?
-I needed a nice way to handle my users and i tried to install FOSUserBundle. Although it's a great development, i found, as many other people, that they tried to make it "too much" adaptable. At the point that it's no longer friendly code.
+I needed a nice way to handle my users and i tried to install FOSUserBundle. Although it's a great development, i found, as many other people, that they tried to make it "too much" adaptable. At the point that it's no longer friendly to the programmer.
 
 # Installation
 - First of all, add the package to composer: "composer require buddiesofsymfony/user-bundle"
