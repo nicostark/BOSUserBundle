@@ -1,6 +1,6 @@
 {
     "name": "buddiesofsymfony/user-bundle",
-    "type": "symfony-bundle"
+    "type": "symfony-bundle",
     "autoload": {
         "psr-4" : {
             "BOS\\UserBundle" : ""
