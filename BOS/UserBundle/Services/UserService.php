@@ -32,26 +32,30 @@ class UserService
 	}
 	
 	public function onKernelController(FilterControllerEvent $event){
-		$request = $event->getRequest();
-		$method = $request->attributes->get('_controller');
-		$reflectionMethod = new \ReflectionMethod($method);
-		$reader = new AnnotationReader();
-		$data = $reader->getMethodAnnotation($reflectionMethod, 'BOS\\UserBundle\\Annotations\\BOSUserFilter');
-		if($data){
-			if($data->loginRequired){
-				if(!$this->isLoggedIn()){
-					$routeName = null;
-					try{
-						$routeName = $this->container->getParameter('bos_login_name');
-					}catch(\Exception $e){
-						die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
+		try{
+			$request = $event->getRequest();
+			$method = $request->attributes->get('_controller');
+			$reflectionMethod = new \ReflectionMethod($method);
+			$reader = new AnnotationReader();
+			$data = $reader->getMethodAnnotation($reflectionMethod, 'BOS\\UserBundle\\Annotations\\BOSUserFilter');
+			if($data){
+				if($data->loginRequired){
+					if(!$this->isLoggedIn()){
+						$routeName = null;
+						try{
+							$routeName = $this->container->getParameter('bos_login_name');
+						}catch(\Exception $e){
+							die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
+						}
+						$url = $this->container->get('router')->generate($routeName);
+						$event->setController(function() use ($url) {
+							return new RedirectResponse($url);
+						});
 					}
-					$url = $this->container->get('router')->generate($routeName);
-					$event->setController(function() use ($url) {
-						return new RedirectResponse($url);
-					});
 				}
 			}
+		}catch(\Exception $e){
+			//Profile involved, let it be
 		}
 	}
 	
