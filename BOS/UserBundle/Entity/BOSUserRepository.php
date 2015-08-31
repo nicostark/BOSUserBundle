@@ -29,6 +29,9 @@ class BOSUserRepository extends EntityRepository
 	public function login($username, $password){
 		$hash = password_hash($password, PASSWORD_BCRYPT);
 		$user = $this->findOneBy(array("username" => $username));
+		if(!$user){
+			throw new \Exception("The username does not exist");
+		}
 		if(password_verify($password, $user->getPassword())){
 			return $user;
 		}else{
