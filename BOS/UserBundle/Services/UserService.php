@@ -24,17 +24,68 @@ class UserService
 	 * @var BOSUserRepository
 	 */
 	private $bos;
+	/**
+	 * @var string
+	 */
+	private $entityClass = "";
 	
 	public function __construct(ContainerInterface $container){
 		$this->container = $container;
 		$this->em = $this->container->get('doctrine')->getEntityManager();
-		$this->bos = $this->em->getRepository("BOSUserBundle:BOSUser");
+		$custom = null;
+		if(!$this->container->getParameter('bos_login_name')){
+			die("BOSUser needs the 'bos_login_name' parameter defined in config.yml. Please refer to the documentation.");
+		}
+		if(!$this->container->getParameter('bos_default_behaviour')){
+			die("BOSUser needs the 'bos_default_behaviour' parameter defined in config.yml. Please refer to the documentation.");
+		}
+		$custom = $this->container->getParameter('bos_user_entity');
+		if($custom){
+			$t = explode(":", $custom);
+			$fBundleName = $t[0];
+			$fEntityName = $t[1];
+			$foundName = "";
+			$foundDir = "";
+			$bundles = $this->container->get('kernel')->getBundles();
+			$bundleName = '';
+			foreach($bundles as $type=>$bundle){
+				$cBundle = new \ReflectionClass($bundle);
+				$cName= $cBundle->getName();
+				$temp = explode("\\", $cName);
+				$bundleName = trim($temp[count($temp) - 1]);
+				$bundleDir = "";
+				for($i = 0; $i < count($temp) - 1; $i++){
+					if($temp[$i]!="\\"){
+						$bundleDir = $bundleDir . $temp[$i] . "\\";
+					}
+				}
+				if($bundleName==$fBundleName){
+					$foundName = $bundleName;
+					$foundDir = $bundleDir;	
+				}
+			}
+			if($foundName==""){
+				die("BOSUser: Couldn't find the bundle '" . $fBundleName . "'. Check your parameters and try again.");
+			}
+			$this->entityClass = $foundDir . "Entity\\" . $fEntityName;
+			try{
+				$this->bos = $this->em->getRepository($custom);
+			}catch(\Exception $e){
+				die("BOSUser: " . $e->getMessage());
+			}
+		}else{
+			$this->entityClass = "";
+			$this->bos = $this->em->getRepository("BOSUserBundle:BOSUser");
+		}
 	}
 	
 	public function onKernelController(FilterControllerEvent $event){
 		try{
 			$request = $event->getRequest();
 			$method = $request->attributes->get('_controller');
+			if(($request->attributes->get('_route'))==$this->container->getParameter('bos_login_name')){
+				return;
+			}
 			$reflectionMethod = new \ReflectionMethod($method);
 			$reader = new AnnotationReader();
 			$data = $reader->getMethodAnnotation($reflectionMethod, 'BOS\\UserBundle\\Annotations\\BOSUserFilter');
@@ -53,64 +104,109 @@ class UserService
 						});
 					}
 				}
+			}else{
+				$behaviour = $this->container->getParameter('bos_default_behaviour');
+				if($behaviour){
+					if($behaviour=="redirect"){
+						$routeName = null;
+						try{
+							$routeName = $this->container->getParameter('bos_login_name');
+						}catch(\Exception $e){
+							die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
+						}
+						$url = $this->container->get('router')->generate($routeName);
+						$event->setController(function() use ($url) {
+							return new RedirectResponse($url);
+						});						
+					}
+				}
 			}
 		}catch(\Exception $e){
 			//Profile involved, let it be
 		}
 	}
 	
-	public function create($username, $password, $email = ""){
-		if(!$this->isValid($username)){
+	public function create($user){
+		if(!$this->isValid($user->getUsername())){
 			throw new \Exception("The username is mandatory");
 		}
-		if(!$this->isValid($password)){
+		if(!$this->isValid($user->getPassword())){
 			throw new \Exception("The password is mandatory");
 		}
-		$user = $this->bos->findOneBy(array("username" => $username));
-		if($user){
+		$password = $user->getPassword();
+		$u = $this->bos->findOneBy(array("username" => $user->getUsername()));
+		if($u){
 			throw new \Exception("This username is already taken");
 		}
-		if($this->isValid($email)){
-			$user = $this->bos->findOneBy(array("email" => $email));
-			if($user){
+		if($this->isValid($user->getEmail())){
+			$u = $this->bos->findOneBy(array("email" => $user->getEmail()));
+			if($u){
 				throw new \Exception("This email is already taken");
 			}
 		}
-		$user = new BOSUser();
-		$user->setUsername($username);
+		if($this->entityClass==""){
+			//$user = new BOSUser();
+		}else{
+			/*
+			$c = new \ReflectionClass($this->entityClass);
+			if(!$c){
+				die("BOSUser: Class '" . $c->getName() . "' not found. Check your parameters.");
+			}
+			$user = $c->newInstanceArgs(array());
+			*/
+		}
 		$hash = password_hash($password, PASSWORD_BCRYPT);
 		$user->setPassword($hash);
-		if($email!=""){
-			$user->setEmail($email);
-		}
 		$this->em->persist($user);
 		$this->em->flush();
-		return $user->getId();
+		return $user;
 	}
 	
 	public function updatePassword($username, $password){
-		return $this->bos->updatePassword($username, $password);
+		$hash = password_hash($password, PASSWORD_BCRYPT);
+		$user = $this->bos->findOneBy(array("username" => $username));
+		if(!$user){
+			throw new \Exception("The username does not exist");
+		}
+		try{
+			$user->setPassword($hash);
+			$this->em->persist($user);
+			$this->em->flush($user);
+		}catch(\Exception $e){
+			throw $e;
+		}
+		return true;
 	}
 	
 	public function usernameExists($username){
-		return $this->bos->usernameExists($username);
+		if($this->bos->findOneBy(array("username" => $username))){
+			return true;
+		}
+		return false;
 	}
 	
 	public function emailExists($email){
-		return $this->bos->emailExists($email);
+		if($this->bos->findOneBy(array("email" => $email))){
+			return true;
+		}
+		return false;
 	}
 	
 	public function login($username, $password){
 		if($this->isLoggedIn()){
-			throw new \Exception("The user is already logged in");
+			$this->logout();
 		}
-		$user = $this->bos->login($username, $password); 
-		if($user){
+		$hash = password_hash($password, PASSWORD_BCRYPT);
+		$user = $this->bos->findOneBy(array("username" => $username));
+		if(!$user){
+			throw new \Exception("The username does not exist");
+		}
+		if(password_verify($password, $user->getPassword())){
 			$session = $this->getSession();
 			$session->set('bos_user', $user);
-			return true;
+			return $user;
 		}else{
-			return false;
+			throw new \Exception("User credentials are incorrect");
 		}
 	}
 	

@@ -21,7 +21,21 @@ class BOSUserExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
+		if(array_key_exists("bos_login_name", $config)){
+			$container->setParameter("bos_login_name", $config["bos_login_name"]);
+		}else{
+			$container->setParameter("bos_login_name", null);
+		}
+		if(array_key_exists("bos_user_entity", $config)){
+			$container->setParameter("bos_user_entity", $config["bos_user_entity"]);
+		}else{
+			$container->setParameter("bos_user_entity", null);
+		}
+		if(array_key_exists("bos_default_behaviour", $config)){
+			$container->setParameter("bos_default_behaviour", $config["bos_default_behaviour"]);
+		}else{
+			$container->setParameter("bos_default_behaviour", null);
+		}
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }

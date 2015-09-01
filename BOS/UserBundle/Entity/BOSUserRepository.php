@@ -12,47 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class BOSUserRepository extends EntityRepository
 {
-	public function usernameExists($username){
-		if($this->findOneBy(array("username" => $username))){
-			return true;
-		}
-		return false;
-	}
-	
-	public function emailExists($email){
-		if($this->findOneBy(array("email" => $email))){
-			return true;
-		}
-		return false;		
-	}
-	
-	public function login($username, $password){
-		$hash = password_hash($password, PASSWORD_BCRYPT);
-		$user = $this->findOneBy(array("username" => $username));
-		if(!$user){
-			throw new \Exception("The username does not exist");
-		}
-		if(password_verify($password, $user->getPassword())){
-			return $user;
-		}else{
-			throw new \Exception("User credentials are incorrect");
-		}
-	}
-	
-	public function updatePassword($username, $password){
-		$hash = password_hash($password, PASSWORD_BCRYPT);
-		$user = $this->findOneBy(array("username" => $username));
-		if(!$user){
-			throw new \Exception("The username does not exist");
-		}
-		try{
-			$user->setPassword($hash);
-			$this->getEntityManager()->persist($user);
-			$this->getEntityManager()->flush($user);
-		}catch(\Exception $e){
-			throw $e;
-		}
-		return true;
-	}
 	
 }
