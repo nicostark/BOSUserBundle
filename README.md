@@ -15,9 +15,9 @@ This bundle will allow you to create users, update them, handle logins and logou
 I needed a nice way to handle my users and i tried to install FOSUserBundle. Although it's a great development, i found, as many other people, that they tried to make it "too much" adaptable. At the point that it's no longer friendly to the programmer.
 
 # Installation
-- First of all, add the package to your composer.json, under require: 
+- First of all, add the package to your composer.json. In your project folder run (on the console): 
  
-`"buddiesofsymfony/user-bundle": "dev-master"`
+`composer require buddiesofsymfony/user-bundle`
 
 - Once you saved it, run "./composer.phar update" to download the bundle.
 
