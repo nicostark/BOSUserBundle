@@ -1,5 +1,4 @@
 {
-    "version": "1.0",
     "name": "buddiesofsymfony/user-bundle",
     "authors": [
 	{
@@ -14,5 +13,10 @@
     },
     "require": {
         "php": ">=5.5.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master" : "1.0.x-dev"
+        }
     }
 }
