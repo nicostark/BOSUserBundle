@@ -108,16 +108,18 @@ class UserService
 				$behaviour = $this->container->getParameter('bos_default_behaviour');
 				if($behaviour){
 					if($behaviour=="redirect"){
-						$routeName = null;
-						try{
-							$routeName = $this->container->getParameter('bos_login_name');
-						}catch(\Exception $e){
-							die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
-						}
-						$url = $this->container->get('router')->generate($routeName);
-						$event->setController(function() use ($url) {
-							return new RedirectResponse($url);
-						});						
+						if(!$this->isLoggedIn()){
+							$routeName = null;
+							try{
+								$routeName = $this->container->getParameter('bos_login_name');
+							}catch(\Exception $e){
+								die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
+							}
+							$url = $this->container->get('router')->generate($routeName);
+							$event->setController(function() use ($url) {
+								return new RedirectResponse($url);
+							});	
+						}					
 					}
 				}
 			}
