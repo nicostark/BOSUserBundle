@@ -82,10 +82,10 @@ class UserService
 	public function onKernelController(FilterControllerEvent $event){
 		try{
 			if($this->isLoggedIn()){
-				$user = $this->get('bos_user')->getUser();
-				$this->get('twig')->addGlobal('bos_user', $user);
+				$user = $this->container->get('bos_user')->getUser();
+				$this->container->get('twig')->addGlobal('bos_user', $user);
 			}else{
-				$this->get('twig')->addGlobal('bos_user', null);
+				$this->container->get('twig')->addGlobal('bos_user', null);
 			}
 			$request = $event->getRequest();
 			$method = $request->attributes->get('_controller');
