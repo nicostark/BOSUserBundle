@@ -23,11 +23,11 @@ class UserService
 	/**
 	 * @var BOSUserRepository
 	 */
-	private $bos;
+	public $bos;
 	/**
 	 * @var string
 	 */
-	private $entityClass = "";
+	public $entityClass = "";
 	
 	public function __construct(ContainerInterface $container){
 		$this->container = $container;
