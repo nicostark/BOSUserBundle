@@ -55,9 +55,7 @@ class CreateCommand extends ContainerAwareCommand
 			}
 			$user->setUsername($username);
 			$user->setPassword($password);
-			$em = $this->container->get('doctrine')->getEntityManager();
-			$em->persist($user);
-			$em->flush();
+			$bos->create($user);
 		}catch(\Exception $e){
 			$output->writeln("<error>" . $e->getMessage() . "</error>");
 			return;

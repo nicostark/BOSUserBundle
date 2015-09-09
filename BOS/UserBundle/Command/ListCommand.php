@@ -22,14 +22,13 @@ class ListCommand extends ContainerAwareCommand
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$this->container = $this->getContainer();
 		$bos = $this->container->get('bos_user');
-		$output->writeln("");
 		if(!$bos){
 			$output->writeln("<error>Couldn't find the bos_user service</error>");
 			return;
 		}
 		$users = $bos->bos->findBy(array(),array("username" => "ASC"));
 		if(!$users){
-			$output->writeln("<error>Couldn't find the repository</error>");
+			$output->writeln("<error>There are no users in this database</error>");
 			return;
 		}
 		if($bos->entityClass==""){

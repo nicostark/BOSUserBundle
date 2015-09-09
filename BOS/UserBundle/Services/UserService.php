@@ -31,7 +31,14 @@ class UserService
 	
 	public function __construct(ContainerInterface $container){
 		$this->container = $container;
-		$this->em = $this->container->get('doctrine')->getEntityManager();
+		try{
+			$this->em = $this->container->get('doctrine')->getManager('bos');
+		}catch(\Exception $e){
+			 
+		}
+		if(!$this->em){
+			$this->em = $this->container->get('doctrine')->getEntityManager();
+		}
 		$custom = null;
 		if(!$this->container->getParameter('bos_login_name')){
 			die("BOSUser needs the 'bos_login_name' parameter defined in config.yml. Please refer to the documentation.");
