@@ -84,6 +84,13 @@ class UserService
 			$this->entityClass = "";
 			$this->bos = $this->em->getRepository("BOSUserBundle:BOSUser");
 		}
+		if($this->isLoggedIn()){
+			//Keep the user data updated
+			$session = $this->getSession();
+			$username = $this->getUser()->getUsername();
+			$user = $this->bos->findOneBy(array("username" => $username));
+			$session->set('bos_user', $user);
+		}
 	}
 	
 	public function onKernelController(FilterControllerEvent $event){
