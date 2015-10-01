@@ -231,6 +231,19 @@ class UserService
 			throw new \Exception("User credentials are incorrect");
 		}
 	}
+
+	public function check($username, $password){
+		$hash = password_hash($password, PASSWORD_BCRYPT);
+		$user = $this->bos->findOneBy(array("username" => $username));
+		if(!$user){
+			return false;
+		}
+		if(password_verify($password, $user->getPassword())){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	public function getUser(){
 		if(!$this->isLoggedIn()){
