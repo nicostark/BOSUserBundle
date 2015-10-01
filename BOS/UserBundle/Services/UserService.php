@@ -258,8 +258,14 @@ class UserService
 		if($this->container->get('session')->isStarted()){
 			$session = $this->container->get('session');
 		}else{
-			$session = new Session();
-			$session->start();
+			if($this->container->get('session')){
+				$session = $this->container->get('session');
+			}else{
+				$session = new Session();
+			}
+			if(!$this->container->get('session')->isStarted()){
+				$session->start();
+			}
 		}
 		return $session;
 	}
