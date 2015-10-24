@@ -135,7 +135,12 @@ class UserService
 							}catch(\Exception $e){
 								die("BOSUser: 'bos_login_name' is needed in your parameters.yml");
 							}
-							$url = $this->container->get('router')->generate($routeName);
+							$url = "";
+							try{
+								$url = $this->container->get('router')->generate($routeName);
+							}catch(\Exception $e){
+								die("BOSUser: Error trying to redirect guest to login page. " . $e->getMessage());
+							}
 							$event->setController(function() use ($url) {
 								return new RedirectResponse($url);
 							});	
