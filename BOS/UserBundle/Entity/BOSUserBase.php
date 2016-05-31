@@ -47,6 +47,21 @@ use Doctrine\ORM\Mapping as ORM;
  	 */
  	protected $salt;
  	
+        
+    
+        /**
+        * @ORM\ManyToMany(targetEntity="System", inversedBy="users",cascade={"persist"})
+        * @ORM\JoinTable(name="users_systems")
+        */
+        private $systems;
+
+        /**
+         * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+         * @ORM\JoinTable(name="users_roles")
+         */
+        private $roles;
+        
+        
  	/**
  	 * Get id
  	 *
