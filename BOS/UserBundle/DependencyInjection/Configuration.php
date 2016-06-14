@@ -21,12 +21,26 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('bos_user');
         $rootNode
         	->children()
-        		->variableNode("bos_login_name")->end()
-        		->variableNode("bos_user_entity")->end()
-        		->variableNode("bos_default_behaviour")->end()
-        	->end()
-        ;
+                    ->variableNode("bos_login_name")->end()
+                    ->variableNode("bos_user_entity")->end()
+                    ->variableNode("bos_default_behaviour")->end()
+                    ->variableNode("bos_system")->end()
+                    ->arrayNode('roles')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('name')->end()
+                                ->arrayNode('permissions')
+                                    ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+        ->end();
 
+
+        
+        
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.

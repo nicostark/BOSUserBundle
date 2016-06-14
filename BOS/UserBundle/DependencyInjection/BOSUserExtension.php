@@ -6,6 +6,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use BOS\UserBundle\Entity\Role;
+use BOS\UserBundle\Entity\Permission;
+
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -14,6 +17,7 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class BOSUserExtension extends Extension
 {
+    
     /**
      * {@inheritdoc}
      */
@@ -35,6 +39,17 @@ class BOSUserExtension extends Extension
 			$container->setParameter("bos_default_behaviour", $config["bos_default_behaviour"]);
 		}else{
 			$container->setParameter("bos_default_behaviour", null);
+		}
+                if(array_key_exists("bos_system", $config)){
+			$container->setParameter("bos_system", $config["bos_system"]);
+		}else{
+			$container->setParameter("bos_system", null);
+		}
+                if(array_key_exists("roles", $config)){
+                    	$container->setParameter("roles", $config["roles"]);
+                        
+                }else{
+			$container->setParameter("roles", null);
 		}
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
